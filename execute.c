@@ -1,89 +1,49 @@
-#include "shell.h"
-
+#include "holberton.h"
 /**
- * authors:Amos Mwongelaa and Oyebanji Olawale Amzat
- * handle_builtin - Handle Builtin Command
- * @cmd: Parsed Command
- * @er:statue of last Excute
- * Return: -1 Fail 0 Succes (Return :Excute Builtin)
- */
-
-int handle_builtin(char **cmd, int er)
-{
-	 bul_t bil[] = {
-		{"cd", change_dir},
-		{"env", dis_env},
-		{"help", display_help},
-		{"echo", echo_bul},
-		{"history", history_dis},
-		{NULL, NULL}
-	};
-	int i = 0;
-
-	while ((bil + i)->command)
-	{
-		if (_strcmp(cmd[0], (bil + i)->command) == 0)
-		{
-			return ((bil + i)->fun(cmd, er));
-		}
-		i++;
-	}
-	return (-1);
-}
-/**
- * check_cmd - Excute Simple Shell Command (Fork,Wait,Excute)
+ * execute_proc - similar to puts in C
+ * @cmd: a pointer the integer we want to set to 402
  *
- * @cmd:Parsed Command
- * @input: User Input
- * @c:Shell Excution Time Case of Command Not Found
- * @argv:Program Name
- * Return: 1 Case Command Null -1 Wrong Command 0 Command Excuted
+ * Return: int
  */
-int check_cmd(char **cmd, char *input, int c, char **argv)
+void execute_proc(char **cmd)
 {
-	int status;
-	pid_t pid;
 
-	if (*cmd == NULL)
-	{
-		return (-1);
-	}
+	char *parametro = (*(cmd + 1));
+	char *s, *slash = "/";
+	char *o;
 
-	pid = fork();
-	if (pid == -1)
-	{
-		perror("Error");
-		return (-1);
-	}
+	char *vartoprint = *cmd;
+	char *argv[4];
 
-	if (pid == 0)
+	if ((access(cmd[0], F_OK) == 0))
 	{
-		if (_strncmp(*cmd, "./", 2) != 0 && _strncmp(*cmd, "/", 1) != 0)
+		argv[0] = cmd[0];
+		argv[1] = parametro;
+		argv[2] = ".";
+		argv[3] = NULL;
+
+		if (execve(argv[0], argv, NULL) == -1)
 		{
-			path_cmd(cmd);
+			perror("Error");
 		}
-
-		if (execve(*cmd, cmd, environ) == -1)
-		{
-			print_error(cmd[0], c, argv);
-			free(input);
-			free(cmd);
-			exit(EXIT_FAILURE);
-		}
-		return (EXIT_SUCCESS);
 	}
-	wait(&status);
-	return (0);
-}
-/**
- * signal_to_handel - Handle ^C
- * @sig:Captured Signal
- * Return: Void
- */
-void signal_to_handel(int sig)
-{
-	if (sig == SIGINT)
+	else
 	{
-		PRINTER("\n$ ");
+		o = find_command(vartoprint);
+
+		slash = str_concat(o, slash);
+
+		s = str_concat(slash, *cmd);
+
+		argv[0] = s;
+		argv[1] = parametro;
+		argv[2] = ".";
+		argv[3] = NULL;
+
+		if (execve(argv[0], argv, NULL) == -1)
+		{
+			perror("Error");
+		}
 	}
 }
+
