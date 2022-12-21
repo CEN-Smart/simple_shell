@@ -1,41 +1,27 @@
-.TH man 1 "28 Nov 2019" "0.1" "simple_shell man page"
-
+.TH hsh 1 "August 2019" "1.0" "hsh - Simple Shell General Commands Manual"
 .SH NAME
-.B simple_shell
-- Simple shell made in C to interact with a linux operating system.
-
+hsh - Simple Shell
 .SH SYNOPSIS
-./hsh [options] [file]
-
+.B hsh
+.I [OPTIONS] [FILE]
+.B Interactive mode
+.I [command_name][option_name][argument ...]
 .SH DESCRIPTION
-Simple_Shell is an sh-compatible command language interpreter that executes
-commands read from the standard input.
-
-.SH Return Value
-
-Always 0 for success, other number means failure.
-
-.SH PATH
-
-It will look inside al directions in PATH env variable for executable.
-
-.SH
-
-.SH OPTIONS
-.B simple_shell
-Command options will be typed after the main command followed by a space and a
- '-' symbol.
-
-.SH EXAMPLE
-
-[command] [options]
-$ ls -l
-
+The simple shell is a program that takes commands from the keyboard and gives them to the operating system to perform. It incorporates many features and generally executes other commands. An interactive shell generally prompts before each command, inspects arguments, execute them and handles possible errors. The simple shell reads input in terms of lines from a file and breaks it up into words at whitespaces. 
+.SH EXAMPLES
+$ ./hsh
+ simple@shell $ /bin/ls
+ README.md exec.c holberton.h main.c prompt.c
+ simple@shell $
+ simple@shell $ exit
+ $
+.PP
+ $ echo "/bin/ls" | ./hsh
+ README.md exec.c holberton.h main.c prompt.c
+ $
 .SH SEE ALSO
-.I peerlearning(2), projectbased(2), fullstack(2), Betty(1)
-
+sh(1)
 .SH BUGS
-Single space required after argument.
-
-.SH AUTHOR
-Camilo Baquero, Sergio Pietri.
+Keep in mind this is still a Work in progress and does not have fully functionality of a shell
+.SH AUTHORS
+Written by Geraldinne Bohórquez & Diego Monroy
